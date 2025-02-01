@@ -4,7 +4,8 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++17 -Iinclude
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
-SRC = src/main.cpp src/Game.cpp src/Player.cpp src/Bullet.cpp src/Utils.cpp
+SRC =src/main.cpp src/Game.cpp src/Player.cpp src/Bullet.cpp src/Utils.cpp src/Menu.cpp
+
 OUT = game
 
 all: $(OUT)

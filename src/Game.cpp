@@ -2,8 +2,8 @@
 
 Game::Game()
     : window(sf::VideoMode(800, 600), "SFML Gunfight Game", sf::Style::Default),
-      player1(20, 275, sf::Color::Green),     // Slightly further from the left edge
-      player2(730, 275, sf::Color::Blue) {    // Slightly further from the right edge
+      player1(20, 275, sf::Color::Green),    
+      player2(730, 275, sf::Color::Blue) {   
 
     window.setFramerateLimit(60);
 
@@ -11,13 +11,11 @@ Game::Game()
     view.setCenter(400, 300);
     window.setView(view);
 
-    // Adjust Player 2's position dynamically
     player2.setPosition(window.getSize().x - player2.getSize().x - 20, window.getSize().y / 2 - player2.getSize().y / 2);
     player1.setPosition(20, window.getSize().y / 2 - player1.getSize().y / 2);
 
-    // Load font for displaying controls
     if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")) {
-        // Handle error if font doesn't load
+        // Handle error
     }
 
     controlsText.setFont(font);
@@ -55,14 +53,16 @@ void Game::processEvents() {
 }
 
 void Game::handleResize(int windowWidth, int windowHeight) {
-    view.setSize(windowWidth, windowHeight);          // View size matches window size
-    view.setCenter(windowWidth / 2, windowHeight / 2); // Center the view
+    view.setSize(windowWidth, windowHeight);
+    view.setCenter(windowWidth / 2, windowHeight / 2);
     window.setView(view);
+
+    controlsText.setPosition(10, windowHeight - 20);
 }
 
 void Game::update() {
-    player1.update(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D);
-    player2.update(sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right);
+    player1.update(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D, window);
+    player2.update(sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right, window);
 
     for (auto& bullet : bullets) {
         bullet.update();

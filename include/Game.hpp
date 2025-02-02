@@ -13,24 +13,24 @@ public:
     void run();
 
 private:
-    // ✅ Core SFML Components
+    // Core SFML Components
     sf::RenderWindow window;
     sf::View view;
 
-    // ✅ Game Elements
+    // Game Elements
     Player player1, player2;
     Map map;
     std::vector<Bullet> bullets;
 
-    // ✅ UI Components
+    // UI Components
     sf::Font font;
     sf::Text controlsText;
 
-    // ✅ Close Button Components
-    sf::RectangleShape closeButton;    // Close Button (Red Box)
-    sf::Text closeButtonText;          // "X" Symbol Inside the Button
+    // Close Button Components
+    sf::RectangleShape closeButton;
+    sf::Text closeButtonText;
 
-    // ✅ Core Game Loop Functions
+    // Core Game Loop Functions
     void processEvents();
     void update();
     void render();

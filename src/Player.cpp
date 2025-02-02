@@ -4,12 +4,12 @@ Player::Player(float x, float y, sf::Color color) {
     shape.setSize(sf::Vector2f(50, 50));
     shape.setFillColor(color);
     shape.setPosition(x, y);
-    speed = 3.0f; // Default movement speed
+    speed = 3.0f; // Default speed
 }
 
-void Player::update(sf::Keyboard::Key up, sf::Keyboard::Key down, 
-                     sf::Keyboard::Key left, sf::Keyboard::Key right, 
-                     const sf::RenderWindow& window, const Map& map) {
+void Player::update(sf::Keyboard::Key up, sf::Keyboard::Key down,
+                    sf::Keyboard::Key left, sf::Keyboard::Key right,
+                    const sf::RenderWindow& window, const Map& map, const Player& otherPlayer) {
     sf::Vector2f movement(0, 0);
 
     // ✅ Movement Input
@@ -22,17 +22,17 @@ void Player::update(sf::Keyboard::Key up, sf::Keyboard::Key down,
     if (sf::Keyboard::isKeyPressed(right))
         movement.x += speed;
 
-    lastMovement = movement;  // Store movement for undo functionality
+    lastMovement = movement;  // Store for undo functionality
 
     // ✅ Move Horizontally First
     shape.move(movement.x, 0);
-    if (map.checkCollision(getBounds())) {
+    if (map.checkCollision(getBounds()) || checkPlayerCollision(otherPlayer.getBounds())) {
         shape.move(-movement.x, 0);  // Undo horizontal movement if collision detected
     }
 
     // ✅ Move Vertically
     shape.move(0, movement.y);
-    if (map.checkCollision(getBounds())) {
+    if (map.checkCollision(getBounds()) || checkPlayerCollision(otherPlayer.getBounds())) {
         shape.move(0, -movement.y);  // Undo vertical movement if collision detected
     }
 
@@ -44,6 +44,12 @@ void Player::update(sf::Keyboard::Key up, sf::Keyboard::Key down,
         shape.setPosition(window.getSize().x - bounds.width, shape.getPosition().y);
     if (bounds.top + bounds.height > window.getSize().y)
         shape.setPosition(shape.getPosition().x, window.getSize().y - bounds.height);
+}
+
+
+// ✅ Player-to-Player Collision Check
+bool Player::checkPlayerCollision(const sf::FloatRect& otherBounds) {
+    return shape.getGlobalBounds().intersects(otherBounds);
 }
 
 void Player::draw(sf::RenderWindow& window) {
@@ -62,9 +68,10 @@ void Player::setPosition(float x, float y) {
     shape.setPosition(x, y);
 }
 
-sf::FloatRect Player::getBounds() {
+sf::FloatRect Player::getBounds() const {
     return shape.getGlobalBounds();
 }
+
 
 void Player::undoMove() {
     shape.move(-lastMovement);

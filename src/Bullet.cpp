@@ -1,20 +1,21 @@
 #include "Bullet.hpp"
 
 Bullet::Bullet(float x, float y, float dirX, float dirY) {
-    shape.setRadius(5);
-    shape.setFillColor(sf::Color::Red);
+    shape.setSize(sf::Vector2f(10, 5));
+    shape.setFillColor(sf::Color::Yellow);
     shape.setPosition(x, y);
-    velocity = sf::Vector2f(dirX, dirY);
+    direction = sf::Vector2f(dirX, dirY);
+    speed = 5.0f;
 }
 
 void Bullet::update() {
-    shape.move(velocity * speed);
+    shape.move(direction * speed);
 }
 
-void Bullet::draw(sf::RenderWindow &window) {
+void Bullet::draw(sf::RenderWindow& window) {
     window.draw(shape);
 }
 
-sf::FloatRect Bullet::getBounds() {
+sf::FloatRect Bullet::getBounds() const {
     return shape.getGlobalBounds();
 }

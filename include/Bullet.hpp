@@ -7,13 +7,13 @@ class Bullet {
 public:
     Bullet(float x, float y, float dirX, float dirY);
     void update();
-    void draw(sf::RenderWindow &window);
-    sf::FloatRect getBounds();
+    void draw(sf::RenderWindow& window);
+    sf::FloatRect getBounds() const;
 
 private:
-    sf::CircleShape shape;
-    sf::Vector2f velocity;
-    float speed = 8.0f;
+    sf::RectangleShape shape;
+    sf::Vector2f direction;
+    float speed;
 };
 
 #endif

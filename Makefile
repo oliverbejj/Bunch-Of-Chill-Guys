@@ -1,5 +1,5 @@
 # Add Map.cpp to the source files
-SRC = src/main.cpp src/Game.cpp src/Player.cpp src/Bullet.cpp src/Utils.cpp src/Map.cpp
+SRC = src/main.cpp src/Game.cpp src/Player.cpp src/Bullet.cpp src/Map.cpp
 
 # Build target
 game: $(SRC)

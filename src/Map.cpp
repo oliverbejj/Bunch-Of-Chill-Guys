@@ -280,9 +280,14 @@ void Map::createMapLayout(int width, int height) {
     walls.push_back(bus2);
 }
 
-void Map::resize(int width, int height) {
-    createMapLayout(width, height);
+void Map::resize(int windowWidth, int windowHeight) {
+    // Clear existing map layout
+    walls.clear();
+
+    // Recreate walls based on new window size
+    createMapLayout(windowWidth, windowHeight);
 }
+
 
 void Map::draw(sf::RenderWindow& window) {
     for (auto& wall : walls) {
@@ -294,11 +299,11 @@ bool Map::checkCollision(const sf::FloatRect& bounds) const {
     for (const auto& wall : walls) {
         if (wall.getRotation() != 0) {
             if (checkRotatedCollision(wall, bounds)) {
-                return true;  // Collision with rotated wall
+                return true;  // Collision detected with a rotated wall
             }
         } else {
             if (wall.getGlobalBounds().intersects(bounds)) {
-                return true;  // Standard collision
+                return true;  // Collision with regular (non-rotated) wall
             }
         }
     }
@@ -307,13 +312,12 @@ bool Map::checkCollision(const sf::FloatRect& bounds) const {
 
 
 
-// ✅ Check Collision with Rotated Rectangles using SAT (Separating Axis Theorem)
-// ✅ Check Collision with Rotated Rectangles using SAT (Separating Axis Theorem)
+
 bool Map::checkRotatedCollision(const sf::RectangleShape& shape, const sf::FloatRect& bounds) const {
     sf::Transform transform = shape.getTransform();
     sf::Vector2f points[4];
 
-    // Get the 4 corners of the rotated rectangle
+    // Get the four corners of the rotated rectangle
     points[0] = transform.transformPoint(0, 0);
     points[1] = transform.transformPoint(shape.getSize().x, 0);
     points[2] = transform.transformPoint(shape.getSize().x, shape.getSize().y);
@@ -322,15 +326,12 @@ bool Map::checkRotatedCollision(const sf::RectangleShape& shape, const sf::Float
     return checkSATCollision(points, bounds);
 }
 
-
-// ✅ SAT Collision Check between Rotated Rectangle and AABB (Player)
 bool Map::checkSATCollision(const sf::Vector2f* rectPoints, const sf::FloatRect& bounds) const {
-    // Axes to test (normals of rectangle edges)
     sf::Vector2f axes[4] = {
-        rectPoints[1] - rectPoints[0],
-        rectPoints[2] - rectPoints[1],
-        {1, 0},  // X-axis for the AABB
-        {0, 1}   // Y-axis for the AABB
+        rectPoints[1] - rectPoints[0],  // Edge 1
+        rectPoints[2] - rectPoints[1],  // Edge 2
+        {1, 0},                         // X-axis for the AABB
+        {0, 1}                          // Y-axis for the AABB
     };
 
     // Normalize axes
@@ -353,7 +354,7 @@ bool Map::checkSATCollision(const sf::Vector2f* rectPoints, const sf::FloatRect&
             maxA = std::max(maxA, projection);
         }
 
-        // Project AABB (player)
+        // Project AABB (bullet/player)
         sf::Vector2f boundsPoints[4] = {
             {bounds.left, bounds.top},
             {bounds.left + bounds.width, bounds.top},
@@ -378,3 +379,4 @@ bool Map::checkSATCollision(const sf::Vector2f* rectPoints, const sf::FloatRect&
 
     return true;  // Collision detected on all axes
 }
+

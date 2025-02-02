@@ -2,10 +2,10 @@
 #define GAME_HPP
 
 #include <SFML/Graphics.hpp>
-#include "Player.hpp"
-#include "Map.hpp"
-#include "Bullet.hpp"
 #include <vector>
+#include "Player.hpp"
+#include "Bullet.hpp"
+#include "Map.hpp"  // ✅ For collision handling
 
 class Game {
 public:
@@ -13,29 +13,30 @@ public:
     void run();
 
 private:
-    // Core SFML Components
-    sf::RenderWindow window;
-    sf::View view;
-
-    // Game Elements
-    Player player1, player2;
-    Map map;
-    std::vector<Bullet> bullets;
-
-    // UI Components
-    sf::Font font;
-    sf::Text controlsText;
-
-    // Close Button Components
-    sf::RectangleShape closeButton;
-    sf::Text closeButtonText;
-
-    // Core Game Loop Functions
+    // ✅ Core Game Loop Functions
     void processEvents();
     void update();
     void render();
-    void handleShooting();
-    void handleResize(int windowWidth, int windowHeight);
+    void handleShooting();                  // ✅ Handles shooting logic
+    void handleResize(int windowWidth, int windowHeight);  // ✅ Adjusts to window resizing
+    void shoot(Player& player);             // ✅ Dynamic shooting based on rotation
+
+    // ✅ Core SFML Components
+    sf::RenderWindow window;
+    sf::View view;
+
+    // ✅ Game Elements
+    Player player1, player2;
+    Map map;                                // ✅ Collision with map elements
+    std::vector<Bullet> bullets;            // ✅ Handles all active bullets
+
+    // ✅ UI Components
+    sf::Font font;
+    sf::Text controlsText;
+
+    // ✅ Close Button Components (from `map` branch)
+    sf::RectangleShape closeButton;
+    sf::Text closeButtonText;
 };
 
-#endif // GAME_HPP
+#endif

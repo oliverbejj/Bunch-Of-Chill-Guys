@@ -39,13 +39,13 @@ private:
 
     // Menu elements
     Menu menu;
-    bool inMenu;  // true if we’re showing the menu
+    bool inMenu; // true if we’re showing the menu
 
     // UI elements
     sf::Font font;
     sf::Text controlsText;
 
-    // “Hamburger” button (or a simple button) to open the menu
+    // “Hamburger” button to open the menu
     sf::RectangleShape menuButton;
     sf::Text menuButtonText;
 };

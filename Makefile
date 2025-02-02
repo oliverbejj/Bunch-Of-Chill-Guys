@@ -1,9 +1,16 @@
-# Add Map.cpp to the source files
-SRC = src/main.cpp src/Game.cpp src/Player.cpp src/Bullet.cpp src/Map.cpp src/Menu.cpp
+# Makefile for SFML Gunfight Game
 
-# Build target
-game: $(SRC)
-	g++ -Wall -std=c++17 -Iinclude $(SRC) -o game -lsfml-graphics -lsfml-window -lsfml-system
+CXX = g++
+CXXFLAGS = -Wall -std=c++17 -Iinclude
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+
+SRC = src/main.cpp src/Game.cpp src/Player.cpp src/Bullet.cpp src/Map.cpp src/Menu.cpp
+OUT = game
+
+all: $(OUT)
+
+$(OUT): $(SRC)
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(OUT) $(LIBS)
 
 clean:
 	rm -f game

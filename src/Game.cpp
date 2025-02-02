@@ -1,53 +1,69 @@
 #include "Game.hpp"
-#include <cmath>    // For cos/sin
-#include <algorithm> // For std::max
+#include <cmath>      // For cos/sin
+#include <algorithm>  // For std::max
 
 Game::Game()
-    : window(sf::VideoMode(800, 600), "SFML Gunfight Game", sf::Style::Default),
+    : window(sf::VideoMode::getDesktopMode(), "SFML Gunfight Game", sf::Style::Fullscreen),
+      // Keep the same Player constructors:
       player1(20, 275, sf::Color::Green),
       player2(730, 275, sf::Color::Blue),
-      map(),                 // Construct your map as needed
-      menu(800, 600),       // Menu with given window size
-      inMenu(true)          // Start in the menu
+      map(),
+      // Construct the menu at fullscreen size
+      menu(window.getSize().x, window.getSize().y),
+      inMenu(true)
 {
-    // Basic window setup
+    // Lock the frame rate
     window.setFramerateLimit(60);
 
-    // Setup the view for 800x600 initially
-    view.setSize(800, 600);
-    view.setCenter(400, 300);
+    // Setup the full screen view
+    float screenWidth  = static_cast<float>(window.getSize().x);
+    float screenHeight = static_cast<float>(window.getSize().y);
+    view.setSize(screenWidth, screenHeight);
+    view.setCenter(screenWidth / 2.f, screenHeight / 2.f);
     window.setView(view);
 
-    // If you have a font, load it here (assuming "arial.ttf" or similar)
+    // Load your font if needed:
     // if (!font.loadFromFile("path/to/arial.ttf")) {
-    //     // Handle error
+    //     // Error handling
     // }
 
-    // Setup controls text (optional)
+    // Controls text at the bottom
     controlsText.setFont(font);
-    controlsText.setString("Press W/A/S/D or Arrow Keys to move. SPACE or ENTER to shoot.");
+    controlsText.setString("W/A/S/D or Arrows to move. SPACE or ENTER to shoot. Click top-left icon for Menu.");
     controlsText.setCharacterSize(14);
     controlsText.setFillColor(sf::Color::White);
-    controlsText.setPosition(10.f, static_cast<float>(window.getSize().y) - 20.f);
+    controlsText.setPosition(10.f, screenHeight - 25.f);
 
-    // Setup “Menu” button (though we use the hamburger icon below)
-    menuButton.setSize(sf::Vector2f(80, 30));
+    // A “Menu” rectangle button (though we typically draw the hamburger icon in render)
+    menuButton.setSize(sf::Vector2f(80.f, 30.f));
     menuButton.setFillColor(sf::Color::Blue);
-    menuButton.setPosition(window.getSize().x - 90.f, 10.f);
+    menuButton.setPosition(screenWidth - 90.f, 10.f);
 
-    // Text inside the button
     menuButtonText.setFont(font);
     menuButtonText.setString("Menu");
     menuButtonText.setCharacterSize(16);
     menuButtonText.setFillColor(sf::Color::White);
-    menuButtonText.setPosition(window.getSize().x - 75.f, 15.f);
+    menuButtonText.setPosition(screenWidth - 75.f, 15.f);
 
-    // Position players in the middle of the window
-    player1.setPosition(20.f, window.getSize().y / 2.f - player1.getSize().y / 2.f);
-    player2.setPosition(
-        window.getSize().x - player2.getSize().x - 20.f,
-        window.getSize().y / 2.f - player2.getSize().y / 2.f
+    // -------------------------------
+    // PLAYER SPAWNS (slightly adjusted)
+    // -------------------------------
+    // Player 1 at x=50 so they're not too close to the edge,
+    //   and center them vertically (minus half of their height).
+    player1.setPosition(
+        50.f,
+        (screenHeight / 2.f) - (player1.getSize().y / 2.f)
     );
+
+    // Player 2 on the right side, center vertically, rotate 180° to face left
+    player2.setPosition(
+        screenWidth - player2.getSize().x - 50.f,
+        (screenHeight / 2.f) - (player2.getSize().y / 2.f)
+    );
+    player2.setRotation(180.f);  // Face left
+
+    // Let the menu format itself for fullscreen
+    menu.adjustMenuPositions(window.getSize().x, window.getSize().y);
 }
 
 void Game::run() {
@@ -61,55 +77,52 @@ void Game::run() {
 void Game::processEvents() {
     sf::Event event;
     while (window.pollEvent(event)) {
-        // Close button
+        // If user tries to close, exit
         if (event.type == sf::Event::Closed) {
             window.close();
         }
 
-        // Handle window resizing
+        // Handle runtime resizing (rare in fullscreen, but we keep the logic)
         if (event.type == sf::Event::Resized) {
             handleResize(event.size.width, event.size.height);
         }
 
-        // If we’re in the menu, handle menu logic
         if (inMenu) {
+            // If we're in the menu, handle menu keys/mouse
             handleMenuInput(event);
 
-            // Mouse hover effect on menu items
+            // Mouse-over effect for menu items
             if (event.type == sf::Event::MouseMoved) {
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
                 menu.onHover(mousePos);
             }
         }
-        // If we’re in the game (not the menu)
         else {
-            // Check if user clicked on the “hamburger” area
+            // Check if user clicked the “hamburger” in top-left corner
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
 
-                // A small bounding box for the hamburger icon
-                sf::FloatRect hamburgerBounds(20.f, 20.f, 30.f, 20.f); 
+                // The bounding box for the three bars
+                sf::FloatRect hamburgerBounds(20.f, 20.f, 30.f, 20.f);
                 if (hamburgerBounds.contains(mousePos)) {
-                    inMenu = true; // Open the menu
+                    inMenu = true;  // Open the menu
                 }
             }
-
-            // Handle shooting keys (Space, Enter)
+            // Shooting
             handleShooting();
         }
     }
 }
 
 void Game::update() {
-    // Only update game elements if not in the menu
     if (!inMenu) {
-        // Player movement & collision with the map
+        // Move players with collision
         player1.update(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D, window, map, player2);
         player2.update(sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right, window, map, player1);
 
-        // Update bullets and handle collisions
+        // Update bullets
         for (auto it = bullets.begin(); it != bullets.end();) {
             it->update();
 
@@ -128,7 +141,6 @@ void Game::update() {
                 it = bullets.erase(it);
                 continue;
             }
-
             ++it;
         }
     }
@@ -137,14 +149,13 @@ void Game::update() {
 void Game::render() {
     window.clear();
 
-    // If we’re in the menu, draw it
     if (inMenu) {
+        // Draw menu background/items
         window.draw(menu.getBackground());
         menu.draw(window);
-    }
-    // Otherwise, draw game elements
+    } 
     else {
-        // Draw map
+        // Draw the map
         map.draw(window);
 
         // Draw players
@@ -159,7 +170,7 @@ void Game::render() {
         // Draw controls text
         window.draw(controlsText);
 
-        // Draw the “hamburger” icon in the corner
+        // “Hamburger” icon in top-left
         sf::RectangleShape bar1(sf::Vector2f(24.f, 4.f));
         sf::RectangleShape bar2(sf::Vector2f(24.f, 4.f));
         sf::RectangleShape bar3(sf::Vector2f(24.f, 4.f));
@@ -181,9 +192,9 @@ void Game::render() {
 }
 
 void Game::handleMenuInput(sf::Event event) {
-    static bool gameStarted = false; // Track if a game has ever started
+    static bool gameStarted = false; // track if a game has started
 
-    // Handle keyboard
+    // Keyboard input for the menu
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Up) {
             menu.moveUp();
@@ -193,20 +204,23 @@ void Game::handleMenuInput(sf::Event event) {
         }
         else if (event.key.code == sf::Keyboard::Enter) {
             int selectedItem = menu.getSelectedItemIndex();
-            if (selectedItem == 0) {     // Play
+            if (selectedItem == 0) { // Play
                 inMenu = false;
                 gameStarted = true;
-                menu.showRestartOption(true);
+                // Instead of menu.showRestartOption(true);
+                menu.showRestartOption(true, window.getSize().x, window.getSize().y);
+
             }
             else if (selectedItem == 1 && gameStarted) { // Restart
                 restartGame();
             }
-            else if ((selectedItem == 2 && gameStarted) || (selectedItem == 1 && !gameStarted)) {
+            else if ((selectedItem == 2 && gameStarted) ||
+                     (selectedItem == 1 && !gameStarted)) {
                 window.close();
             }
         }
     }
-    // Handle mouse
+    // Mouse input for the menu
     else if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
@@ -214,15 +228,18 @@ void Game::handleMenuInput(sf::Event event) {
 
             int selectedItem = menu.getItemIndexAtPosition(mousePos);
             if (selectedItem != -1) {
-                if (selectedItem == 0) {     // Play
+                if (selectedItem == 0) {  // Play
                     inMenu = false;
                     gameStarted = true;
-                    menu.showRestartOption(true);
+                    // Instead of menu.showRestartOption(true);
+                    menu.showRestartOption(true, window.getSize().x, window.getSize().y);
+
                 }
                 else if (selectedItem == 1 && gameStarted) { // Restart
                     restartGame();
                 }
-                else if ((selectedItem == 2 && gameStarted) || (selectedItem == 1 && !gameStarted)) {
+                else if ((selectedItem == 2 && gameStarted) ||
+                         (selectedItem == 1 && !gameStarted)) {
                     window.close();
                 }
             }
@@ -231,11 +248,11 @@ void Game::handleMenuInput(sf::Event event) {
 }
 
 void Game::handleShooting() {
-    // Press Space to shoot with player1
+    // Player1 shoots with Space
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         shoot(player1);
     }
-    // Press Enter to shoot with player2
+    // Player2 shoots with Enter
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
         shoot(player2);
     }
@@ -244,10 +261,10 @@ void Game::handleShooting() {
 // Spawns a bullet in the direction the player is facing
 void Game::shoot(Player& player) {
     float angle = player.getRotation() * 3.14159265f / 180.0f;
-    float dirX = std::cos(angle);
-    float dirY = std::sin(angle);
+    float dirX  = std::cos(angle);
+    float dirY  = std::sin(angle);
 
-    // Ensure bullet spawns a bit “in front” of the player
+    // Offset bullet so it doesn't spawn inside the player
     float offset = std::max(player.getSize().x, player.getSize().y) / 2.f + 10.f;
     float bulletX = player.getPosition().x + dirX * offset;
     float bulletY = player.getPosition().y + dirY * offset;
@@ -255,46 +272,55 @@ void Game::shoot(Player& player) {
     bullets.push_back(Bullet(bulletX, bulletY, dirX, dirY));
 }
 
-// Handle window resizing
+// Handle a resize (fullscreen won't often get a resize event, but let's keep it)
 void Game::handleResize(int windowWidth, int windowHeight) {
-    // Adjust the view
     view.setSize(static_cast<float>(windowWidth), static_cast<float>(windowHeight));
-    view.setCenter(static_cast<float>(windowWidth) / 2.f, static_cast<float>(windowHeight) / 2.f);
+    view.setCenter(static_cast<float>(windowWidth) / 2.f,
+                   static_cast<float>(windowHeight) / 2.f);
     window.setView(view);
 
-    // Resize the map (if your Map supports this)
     map.resize(windowWidth, windowHeight);
 
-    // Reposition players
-    player1.setPosition(50.f, windowHeight / 2.f - player1.getSize().y / 2.f);
-    player2.setPosition(windowWidth - player2.getSize().x - 20.f, 
-                        windowHeight / 2.f - player2.getSize().y / 2.f);
-    // You could adjust rotation if you need:
-    // player2.setRotation(180.f);
-
-    // Reposition UI elements
+    // Reposition the UI
     menuButton.setPosition(windowWidth - 90.f, 10.f);
     menuButtonText.setPosition(windowWidth - 75.f, 15.f);
-    controlsText.setPosition(10.f, static_cast<float>(windowHeight) - 20.f);
+    controlsText.setPosition(10.f, static_cast<float>(windowHeight) - 25.f);
 
-    // Let the Menu adjust
+    // Let the menu recenter for the new size
     menu.adjustMenuPositions(windowWidth, windowHeight);
+
+    // Reposition players similarly
+    player1.setPosition(
+        50.f,
+        (windowHeight / 2.f) - (player1.getSize().y / 2.f)
+    );
+    // Player 2 on right, face left
+    player2.setPosition(
+        windowWidth - player2.getSize().x - 50.f,
+        (windowHeight / 2.f) - (player2.getSize().y / 2.f)
+    );
+    player2.setRotation(180.f);
 }
 
-// Reset positions/states without quitting
 void Game::restartGame() {
-    sf::Vector2f viewSize = view.getSize();
+    // Clear bullets and reposition players as if new game
+    sf::Vector2f viewSize   = view.getSize();
     sf::Vector2f viewCenter = view.getCenter();
-    float windowWidth = viewSize.x;
+    float windowWidth       = viewSize.x;
+    float windowHeight      = viewSize.y;
 
-    // Position players again
-    player1.setPosition(20.f, viewCenter.y - player1.getSize().y / 2.f);
-    player2.setPosition(windowWidth - player2.getSize().x - 20.f, 
-                        viewCenter.y - player2.getSize().y / 2.f);
+    // Put them at the same positions as constructor
+    player1.setPosition(
+        50.f,
+        (windowHeight / 2.f) - (player1.getSize().y / 2.f)
+    );
+    player2.setPosition(
+        windowWidth - player2.getSize().x - 50.f,
+        (windowHeight / 2.f) - (player2.getSize().y / 2.f)
+    );
+    player1.setRotation(0.f);
+    player2.setRotation(180.f);
 
-    // Clear all bullets
     bullets.clear();
-
-    // Resume game
-    inMenu = false;
+    inMenu = false;  // Resume the game
 }

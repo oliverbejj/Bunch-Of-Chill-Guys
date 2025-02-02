@@ -45,9 +45,18 @@ void Game::processEvents() {
 
         if (inMenu) {
             handleMenuInput(event);
+
+            // ✅ Handle mouse hover for menu items
+            if (event.type == sf::Event::MouseMoved) {
+                sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
+
+                // ✅ Trigger hover effect
+                menu.onHover(mousePos);
+            }
         } else {
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-    // Convert mouse position to world coordinates
+                // Convert mouse position to world coordinates
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
 
@@ -139,6 +148,7 @@ void Game::render() {
     window.clear();
 
     if (inMenu) {
+        window.draw(menu.getBackground());  // ✅ Draw background first
         menu.draw(window);
     } else {
         player1.draw(window);
@@ -149,8 +159,6 @@ void Game::render() {
         }
 
         window.draw(controlsText);
-
-        // Draw the in-game menu button
         window.draw(menuButton);
         window.draw(menuButtonText);
     }

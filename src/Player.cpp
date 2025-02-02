@@ -18,10 +18,6 @@ Player::Player(float x, float y, sf::Color color, const std::string &textureFile
     shape.setSize(sf::Vector2f(50.0f, 50.0f)); // Example size, adjust as needed
     shape.setFillColor(color);
     shape.setOrigin(sprite.getGlobalBounds().width / 2, sprite.getGlobalBounds().height / 2);
-
-    // Position the shape's center to align with the sprite's center
-    // sf::Vector2f spriteCenter = sprite.getPosition();  // Sprite's center is already at (x, y)
-    // shape.setPosition(500, 500);  // Adjust shape position
 }
 
 void Player::update(sf::Keyboard::Key up, sf::Keyboard::Key down, sf::Keyboard::Key left, sf::Keyboard::Key right, const sf::RenderWindow &window)

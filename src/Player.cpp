@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Map.hpp"  // ✅ Add this line
 #include <iostream>
 
 Player::Player(float x, float y, sf::Color color, const std::string &textureFile) {
@@ -84,7 +85,6 @@ sf::Vector2f Player::getSize() {
 sf::FloatRect Player::getBounds() const {
     return shape.getGlobalBounds();
 }
-
 
 float Player::getRotation() {
     return sprite.getRotation();

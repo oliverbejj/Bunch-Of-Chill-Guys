@@ -9,45 +9,35 @@
 #include "Menu.hpp"
 
 class Game {
+private:
+    sf::RenderWindow window;
+    sf::View view;
+    Player player1;
+    Player player2;
+    Map map;
+    Menu menu;
+    bool inMenu;
+    sf::Font font;
+    sf::Text controlsText;
+    std::vector<Bullet> bullets;
+
+    // ✅ Health Bars and Round-End Text
+    sf::RectangleShape healthBarP1, healthBarP2;
+    sf::Text roundEndedText;
+
 public:
     Game();
     void run();
 
 private:
-    // Core game loop
     void processEvents();
     void update();
     void render();
-
-    // Event handling
     void handleMenuInput(sf::Event event);
     void handleShooting();
-    void handleResize(int windowWidth, int windowHeight);
-
-    // Utility
     void shoot(Player& player);
+    void handleResize(int windowWidth, int windowHeight);
     void restartGame();
-
-    // Window & View
-    sf::RenderWindow window;
-    sf::View view;
-
-    // Game elements
-    Player player1, player2;
-    std::vector<Bullet> bullets;
-    Map map;
-
-    // Menu elements
-    Menu menu;
-    bool inMenu; // true if we’re showing the menu
-
-    // UI elements
-    sf::Font font;
-    sf::Text controlsText;
-
-    // “Hamburger” button to open the menu
-    sf::RectangleShape menuButton;
-    sf::Text menuButtonText;
 };
 
-#endif
+#endif // GAME_HPP

@@ -281,11 +281,8 @@ void Map::createMapLayout(int width, int height) {
 }
 
 void Map::resize(int windowWidth, int windowHeight) {
-    // Clear existing map layout
-    walls.clear();
-
-    // Recreate walls based on new window size
-    createMapLayout(windowWidth, windowHeight);
+    walls.clear();  // ✅ Original code behavior
+    createMapLayout(windowWidth, windowHeight);  // Recreate layout to fit new size
 }
 
 

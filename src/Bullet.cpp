@@ -10,7 +10,7 @@ Bullet::Bullet(float x, float y, float dirX, float dirY) {
     float magnitude = std::sqrt(dirX * dirX + dirY * dirY);
     direction = (magnitude != 0) ? sf::Vector2f(dirX / magnitude, dirY / magnitude) : sf::Vector2f(1, 0);
     
-    speed = 5.0f;  // Bullet speed
+    speed = 10.0f;  // Bullet speed
 }
 
 void Bullet::update() {

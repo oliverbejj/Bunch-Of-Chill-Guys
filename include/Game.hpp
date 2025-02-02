@@ -5,7 +5,8 @@
 #include <vector>
 #include "Player.hpp"
 #include "Bullet.hpp"
-#include "Map.hpp"  // ✅ For collision handling
+#include "Map.hpp"
+#include "Menu.hpp"
 
 class Game {
 public:
@@ -13,30 +14,40 @@ public:
     void run();
 
 private:
-    // ✅ Core Game Loop Functions
+    // Core game loop
     void processEvents();
     void update();
     void render();
-    void handleShooting();                  // ✅ Handles shooting logic
-    void handleResize(int windowWidth, int windowHeight);  // ✅ Adjusts to window resizing
-    void shoot(Player& player);             // ✅ Dynamic shooting based on rotation
 
-    // ✅ Core SFML Components
+    // Event handling
+    void handleMenuInput(sf::Event event);
+    void handleShooting();
+    void handleResize(int windowWidth, int windowHeight);
+
+    // Utility
+    void shoot(Player& player);
+    void restartGame();
+
+    // Window & View
     sf::RenderWindow window;
     sf::View view;
 
-    // ✅ Game Elements
+    // Game elements
     Player player1, player2;
-    Map map;                                // ✅ Collision with map elements
-    std::vector<Bullet> bullets;            // ✅ Handles all active bullets
+    std::vector<Bullet> bullets;
+    Map map;
 
-    // ✅ UI Components
+    // Menu elements
+    Menu menu;
+    bool inMenu;  // true if we’re showing the menu
+
+    // UI elements
     sf::Font font;
     sf::Text controlsText;
 
-    // ✅ Close Button Components (from `map` branch)
-    sf::RectangleShape closeButton;
-    sf::Text closeButtonText;
+    // “Hamburger” button (or a simple button) to open the menu
+    sf::RectangleShape menuButton;
+    sf::Text menuButtonText;
 };
 
 #endif

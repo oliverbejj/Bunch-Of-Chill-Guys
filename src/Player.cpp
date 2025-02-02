@@ -1,14 +1,18 @@
 #include "Player.hpp"
 
 Player::Player(float x, float y, sf::Color color) {
-    shape.setSize(sf::Vector2f(50, 50));   // Perfect square: 50x50
+    shape.setSize(sf::Vector2f(50, 50));
     shape.setFillColor(color);
     shape.setPosition(x, y);
+    speed = 3.0f; // Default movement speed
 }
 
-void Player::update(sf::Keyboard::Key up, sf::Keyboard::Key down, sf::Keyboard::Key left, sf::Keyboard::Key right, const sf::RenderWindow& window) {
+void Player::update(sf::Keyboard::Key up, sf::Keyboard::Key down, 
+                     sf::Keyboard::Key left, sf::Keyboard::Key right, 
+                     const sf::RenderWindow& window, const Map& map) {
     sf::Vector2f movement(0, 0);
 
+    // ✅ Movement Input
     if (sf::Keyboard::isKeyPressed(up))
         movement.y -= speed;
     if (sf::Keyboard::isKeyPressed(down))
@@ -18,18 +22,28 @@ void Player::update(sf::Keyboard::Key up, sf::Keyboard::Key down, sf::Keyboard::
     if (sf::Keyboard::isKeyPressed(right))
         movement.x += speed;
 
-    shape.move(movement);
+    lastMovement = movement;  // Store movement for undo functionality
 
-    // Get the current window size for fullscreen boundaries
-    sf::Vector2u windowSize = window.getSize();
-    sf::Vector2f pos = shape.getPosition();
-    sf::Vector2f size = shape.getSize();
+    // ✅ Move Horizontally First
+    shape.move(movement.x, 0);
+    if (map.checkCollision(getBounds())) {
+        shape.move(-movement.x, 0);  // Undo horizontal movement if collision detected
+    }
 
-    // Ensure boundary conditions for fullscreen
-    if (pos.x < 0) shape.setPosition(0, pos.y);                                      // Left boundary
-    if (pos.y < 0) shape.setPosition(pos.x, 0);                                      // Top boundary
-    if (pos.x + size.x > windowSize.x) shape.setPosition(windowSize.x - size.x, pos.y); // Right boundary
-    if (pos.y + size.y > windowSize.y) shape.setPosition(pos.x, windowSize.y - size.y); // Bottom boundary
+    // ✅ Move Vertically
+    shape.move(0, movement.y);
+    if (map.checkCollision(getBounds())) {
+        shape.move(0, -movement.y);  // Undo vertical movement if collision detected
+    }
+
+    // ✅ Keep Player Within Window Bounds
+    sf::FloatRect bounds = shape.getGlobalBounds();
+    if (bounds.left < 0) shape.setPosition(0, shape.getPosition().y);
+    if (bounds.top < 0) shape.setPosition(shape.getPosition().x, 0);
+    if (bounds.left + bounds.width > window.getSize().x)
+        shape.setPosition(window.getSize().x - bounds.width, shape.getPosition().y);
+    if (bounds.top + bounds.height > window.getSize().y)
+        shape.setPosition(shape.getPosition().x, window.getSize().y - bounds.height);
 }
 
 void Player::draw(sf::RenderWindow& window) {
@@ -46,4 +60,12 @@ sf::Vector2f Player::getSize() {
 
 void Player::setPosition(float x, float y) {
     shape.setPosition(x, y);
+}
+
+sf::FloatRect Player::getBounds() {
+    return shape.getGlobalBounds();
+}
+
+void Player::undoMove() {
+    shape.move(-lastMovement);
 }

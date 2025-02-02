@@ -57,7 +57,7 @@ Game::Game()
 
     // Player 2 on the right side, center vertically, rotate 180° to face left
     player2.setPosition(
-        screenWidth - player2.getSize().x - 50.f,
+        screenWidth - player2.getSize().x  ,
         (screenHeight / 2.f) - (player2.getSize().y / 2.f)
     );
     player2.setRotation(180.f);  // Face left
@@ -296,7 +296,7 @@ void Game::handleResize(int windowWidth, int windowHeight) {
     );
     // Player 2 on right, face left
     player2.setPosition(
-        windowWidth - player2.getSize().x - 50.f,
+        windowWidth - player2.getSize().x ,
         (windowHeight / 2.f) - (player2.getSize().y / 2.f)
     );
     player2.setRotation(180.f);
@@ -315,7 +315,7 @@ void Game::restartGame() {
         (windowHeight / 2.f) - (player1.getSize().y / 2.f)
     );
     player2.setPosition(
-        windowWidth - player2.getSize().x - 50.f,
+        windowWidth - player2.getSize().x ,
         (windowHeight / 2.f) - (player2.getSize().y / 2.f)
     );
     player1.setRotation(0.f);

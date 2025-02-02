@@ -16,6 +16,7 @@ private:
     std::vector<sf::RectangleShape> walls;
     bool checkRotatedCollision(const sf::RectangleShape& shape, const sf::FloatRect& bounds) const;
     bool checkSATCollision(const sf::Vector2f* rectPoints, const sf::FloatRect& bounds) const;
+    sf::Color beige;  
 };
 
 #endif // MAP_HPP

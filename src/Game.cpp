@@ -46,22 +46,21 @@ void Game::processEvents() {
         if (inMenu) {
             handleMenuInput(event);
 
-            // ✅ Handle mouse hover for menu items
             if (event.type == sf::Event::MouseMoved) {
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
-
-                // ✅ Trigger hover effect
                 menu.onHover(mousePos);
             }
         } else {
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                // Convert mouse position to world coordinates
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
 
-                if (menuButton.getGlobalBounds().contains(mousePos)) {
-                    inMenu = true;  // Open the menu
+                // ✅ Detect clicks covering the entire button area (all lines)
+                sf::FloatRect buttonBounds(20, 20, 30, 20); // Covers all three bars vertically
+
+                if (buttonBounds.contains(mousePos)) {
+                    inMenu = true;
                 }
             }
 
@@ -148,7 +147,7 @@ void Game::render() {
     window.clear();
 
     if (inMenu) {
-        window.draw(menu.getBackground());  // ✅ Draw background first
+        window.draw(menu.getBackground());
         menu.draw(window);
     } else {
         player1.draw(window);
@@ -159,12 +158,28 @@ void Game::render() {
         }
 
         window.draw(controlsText);
-        window.draw(menuButton);
-        window.draw(menuButtonText);
+
+        // ✅ Draw Menu Button as Three Bars (Hamburger Icon)
+        sf::RectangleShape bar1(sf::Vector2f(24, 4));  // Less stretched horizontally
+        sf::RectangleShape bar2(sf::Vector2f(24, 4));
+        sf::RectangleShape bar3(sf::Vector2f(24, 4));
+
+        bar1.setFillColor(sf::Color::White);
+        bar2.setFillColor(sf::Color::White);
+        bar3.setFillColor(sf::Color::White);
+
+        bar1.setPosition(20, 20);
+        bar2.setPosition(20, 28); // Increased separation
+        bar3.setPosition(20, 36);
+
+        window.draw(bar1);
+        window.draw(bar2);
+        window.draw(bar3);
     }
 
     window.display();
 }
+
 
 
 void Game::handleShooting() {

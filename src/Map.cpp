@@ -43,6 +43,27 @@ void Map::createMapLayout(int width, int height) {
     bumpRight.setFillColor(sf::Color::Red);              // Same color as outer walls
     walls.push_back(bumpRight);
 
+    sf::RectangleShape bump1(sf::Vector2f(150, 66));  // Bump size: 40x40 (adjustable)
+    bump1.setPosition(20, height/2 + 170 );         // Positioned slightly above the bottom wall
+    bump1.setFillColor(sf::Color::Red);              // Same color as outer walls
+    walls.push_back(bump1);
+
+    sf::RectangleShape idk1(sf::Vector2f(10, 90));  // Bump size: 40x40 (adjustable)
+    idk1.setPosition(160, height/2 + 170 + 66 + 100 );         // Positioned slightly above the bottom wall
+    idk1.setFillColor(sf::Color::White);              // Same color as outer walls
+    walls.push_back(idk1);
+
+
+    sf::RectangleShape bump2(sf::Vector2f(150, 66));  // Bump size: 40x40 (adjustable)
+    bump2.setPosition(4*width/5 + 215, height/2 - 200 );         // Positioned slightly above the bottom wall
+    bump2.setFillColor(sf::Color::Red);              // Same color as outer walls
+    walls.push_back(bump2);
+
+    sf::RectangleShape idk2(sf::Vector2f(10, 90));  // Bump size: 40x40 (adjustable)
+    idk2.setPosition(4*width/5 + 215, height/2 - 220 - 66 - 100 );         // Positioned slightly above the bottom wall
+    idk2.setFillColor(sf::Color::White);              // Same color as outer walls
+    walls.push_back(idk2);
+
 
 
 

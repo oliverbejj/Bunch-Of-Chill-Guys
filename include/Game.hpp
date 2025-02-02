@@ -22,7 +22,7 @@ private:
 
     sf::RenderWindow window;
     sf::View view;
-    Player player, player2;
+    Player player1, player2;
     std::vector<Bullet> bullets;
 
     // For displaying controls

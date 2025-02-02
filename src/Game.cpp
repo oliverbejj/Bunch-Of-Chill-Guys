@@ -3,7 +3,7 @@
 
 Game::Game()
     : window(sf::VideoMode(800, 600), "SFML Gunfight Game", sf::Style::Default),
-      player(20, 275, sf::Color::Green),
+      player1(20, 275, sf::Color::Green),
       player2(730, 275, sf::Color::Blue)
 {
 
@@ -14,7 +14,7 @@ Game::Game()
     window.setView(view);
 
     player2.setPosition(window.getSize().x - player2.getSize().x - 20, window.getSize().y / 2 - player2.getSize().y / 2);
-    player.setPosition(20, window.getSize().y / 2 - player.getSize().y / 2);
+    player1.setPosition(20, window.getSize().y / 2 - player1.getSize().y / 2);
 
     if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"))
     {
@@ -50,7 +50,7 @@ void Game::processEvents()
             handleResize(event.size.width, event.size.height);
 
             // Adjust players to stay near the edges
-            player.setPosition(20, window.getSize().y / 2 - player.getSize().y / 2);                                              // Slightly from the left edge, vertically centered
+            player1.setPosition(20, window.getSize().y / 2 - player1.getSize().y / 2);                                            // Slightly from the left edge, vertically centered
             player2.setPosition(window.getSize().x - player2.getSize().x - 20, window.getSize().y / 2 - player2.getSize().y / 2); // Slightly from the right edge, vertically centered
 
             // Adjust controls text position when resizing
@@ -71,7 +71,7 @@ void Game::handleResize(int windowWidth, int windowHeight)
 
 void Game::update()
 {
-    player.update(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D, window);
+    player1.update(sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D, window);
     player2.update(sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right, window);
 
     for (auto &bullet : bullets)
@@ -83,7 +83,7 @@ void Game::update()
 void Game::render()
 {
     window.clear();
-    player.draw(window);
+    player1.draw(window);
     player2.draw(window);
 
     for (auto &bullet : bullets)
@@ -106,15 +106,12 @@ void Game::handleShooting()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
-        // shoot(player);
-        // Shoot bullet from player1's origin (center)
-        bullets.push_back(Bullet(player.getPosition().x + player.getSize().x / 2, player.getPosition().y, 1, 0));
+        shoot(player1);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
     {
-        // Shoot bullet from player2's origin (center)
-        bullets.push_back(Bullet(player2.getPosition().x + player2.getSize().x / 2, player2.getPosition().y, -1, 0));
+        shoot(player2);
     }
 }
 
@@ -136,11 +133,10 @@ void Game::shoot(Player &player)
     float bulletY = player.getPosition().y + dirY * offset;
 
     // Set the bullet's velocity (scaled by a speed factor)
-    float bulletSpeed = 200.0f; // Adjust as needed
+    float bulletSpeed = 1.0f; // Adjust as needed
     float velX = dirX * bulletSpeed;
     float velY = dirY * bulletSpeed;
-    // std::cout << bulletX << std::endl;
 
     // Shoot the bullet
-    bullets.push_back(Bullet(bulletX, player.getPosition().y, velX, velY));
+    bullets.push_back(Bullet(bulletX, bulletY, velX, velY));
 }

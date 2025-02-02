@@ -6,7 +6,8 @@
 #include "Player.hpp"
 #include "Bullet.hpp"
 
-class Game {
+class Game
+{
 public:
     Game();
     void run();
@@ -17,10 +18,11 @@ private:
     void render();
     void handleShooting();
     void handleResize(int windowWidth, int windowHeight);
+    void shoot(Player &player);
 
     sf::RenderWindow window;
     sf::View view;
-    Player player1, player2;
+    Player player, player2;
     std::vector<Bullet> bullets;
 
     // For displaying controls

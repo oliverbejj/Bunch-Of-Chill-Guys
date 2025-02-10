@@ -3,7 +3,6 @@
 *This project was developed with significant assistance from ChatGPT and was created during ConUHacks IX 2025.*
 
 ## **1. System Requirements**
-- **Operating System:** Linux
 - **Dependencies:**
   - [SFML Library](https://www.sfml-dev.org/) (Simple and Fast Multimedia Library)
   - A C++ compiler supporting C++11 or higher (e.g., `g++`)

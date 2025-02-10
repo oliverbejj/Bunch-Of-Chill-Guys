@@ -75,7 +75,7 @@ The game will launch in **fullscreen mode**. You can **exit anytime** using `Esc
 ## **7. Credits**
 - Developed by **A bunch of chill guys**
 - Built using **C++ & SFML**
-- Special thanks to **open-source contributors**
+- Special thanks to **OpenAI**
 - Created during **ConUHacks IX 2025**
 
 ---

@@ -71,35 +71,8 @@ The game will launch in **fullscreen mode**. You can **exit anytime** using `Esc
 
 ---
 
-## **7. Troubleshooting**
-### **Issue: SFML Not Found**
-If you get an error about missing SFML, ensure it is installed correctly:
-```sh
-ldd ./game | grep sfml
-```
-If the output shows missing SFML libraries, reinstall SFML.
 
-### **Issue: Game Won't Start**
-Check if the game binary has execution permissions:
-```sh
-chmod +x game
-./game
-```
-
-### **Issue: Graphics Lag**
-Run the game in **windowed mode** by modifying `Game.cpp`:
-Change:
-```cpp
-window(sf::VideoMode::getDesktopMode(), "SFML Gunfight Game", sf::Style::Fullscreen)
-```
-To:
-```cpp
-window(sf::VideoMode(800, 600), "SFML Gunfight Game", sf::Style::Default)
-```
-
----
-
-## **8. Credits**
+## **7. Credits**
 - Developed by **A bunch of chill guys**
 - Built using **C++ & SFML**
 - Special thanks to **open-source contributors**

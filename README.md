@@ -1,4 +1,4 @@
-# **Top Down-NukeDown - Running Instructions**
+# **TopDown-NukeDown - Running Instructions**
 
 *This project was developed with significant assistance from ChatGPT and was created during ConUHacks IX 2025.*
 

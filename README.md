@@ -1,4 +1,4 @@
-# **Gunfight Game - Running Instructions**
+# **Top Down-NukeDown - Running Instructions**
 
 *This project was developed with significant assistance from ChatGPT and was created during ConUHacks IX 2025.*
 

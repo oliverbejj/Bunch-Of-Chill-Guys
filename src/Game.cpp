@@ -19,19 +19,19 @@ Game::Game()
     controlsText.setCharacterSize(14);
     controlsText.setFillColor(sf::Color::White);
 
-    // ✅ Health Bar Initialization (Positioning left to you)
+    //  Health Bar Initialization (Positioning left)
     healthBarP1.setSize(sf::Vector2f(100, 10));
     healthBarP1.setFillColor(sf::Color::Green);
 
-    healthBarP1.setPosition(5, 5);  // Example position, adjust as needed
+    healthBarP1.setPosition(5, 5);  
 
     healthBarP2.setSize(sf::Vector2f(100, 10));
     healthBarP2.setFillColor(sf::Color::Green);
-    // ✅ You can set Player 2's health bar position here:
-    healthBarP2.setPosition(window.getSize().x -105, 5);  // Example position, adjust as needed
+   
+    healthBarP2.setPosition(window.getSize().x -105, 5); 
     
 
-    // ✅ Round-Ended Text
+    // Round-Ended Text
     roundEndedText.setFont(font);
     roundEndedText.setCharacterSize(24);
     roundEndedText.setFillColor(sf::Color::Blue);
@@ -40,7 +40,7 @@ Game::Game()
     player2.setShapeColor(sf::Color::Red);
 
 
-    // ✅ Round and Score Display Initialization
+    // Round and Score Display Initialization
     roundText.setFont(font);
     roundText.setCharacterSize(20);
     roundText.setFillColor(sf::Color::White);
@@ -53,12 +53,12 @@ Game::Game()
 
     updateScoreDisplay(); // Initialize display with current scores
 
-    // ✅ Load background music
+    // Load background music
     if (!gameMusic.openFromFile("assets/background.wav")) {
         std::cerr << "Failed to load game_music.ogg" << std::endl;
     }
     gameMusic.setLoop(true);
-    gameMusic.setVolume(50);
+    gameMusic.setVolume(100);
     gameMusic.play();
 
 
@@ -89,7 +89,7 @@ void Game::processEvents() {
         if (inMenu) {
             handleMenuInput(event);
         } else {
-            // ✅ Handle hamburger icon click
+            //  Handle hamburger icon click
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
@@ -97,7 +97,7 @@ void Game::processEvents() {
                 // Bounding box for the hamburger icon
                 sf::FloatRect hamburgerBounds(20.f, 20.f, 30.f, 20.f);
                 if (hamburgerBounds.contains(mousePos)) {
-                    inMenu = true;  // ✅ Open the menu when clicked
+                    inMenu = true;  // Open the menu when clicked
                 }
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
@@ -124,34 +124,34 @@ void Game::update() {
             }
 
             if (it->getBounds().intersects(player1.getBounds())) {
-                player1.takeDamage(5);  // ✅ Apply damage
+                player1.takeDamage(5);  //  Apply damage
                 it = bullets.erase(it);
                 if (player1.isDead())
                 {
                     roundEndedText.setString("Round Ended: Player 2 Wins!");
                     restartGame();
-                    player2Score++;               // ✅ Increment Player 2's score
+                    player2Score++;               //  Increment Player 2's score
                     updateScoreDisplay(); 
-                } // ✅ Round-End
+                } // Round-End
                 continue;
             }
 
             if (it->getBounds().intersects(player2.getBounds())) {
-                player2.takeDamage(5);  // ✅ Apply damage
+                player2.takeDamage(5);  // Apply damage
                 it = bullets.erase(it);
                 if (player2.isDead())
                 {
                     roundEndedText.setString("Round Ended: Player 1 Wins!");
                     restartGame();
-                    player1Score++;               // ✅ Increment Player 1's score
-                    updateScoreDisplay();         // ✅ Update display
-                } // ✅ Round-End
+                    player1Score++;               // Increment Player 1's score
+                    updateScoreDisplay();         // Update display
+                } // Round-End
                 continue;
             }
             ++it;
         }
 
-        // ✅ Update Health Bars (Positioning left to you)
+        // Update Health Bars (Positioning left to you)
         healthBarP1.setSize(sf::Vector2f(player1.getHealth(), 10));
         healthBarP2.setSize(sf::Vector2f(player2.getHealth(), 10));
     }
@@ -172,14 +172,14 @@ if (inMenu) {
 
     window.draw(controlsText);
 
-    // ✅ Draw Health Bars
+    //  Draw Health Bars
     window.draw(healthBarP1);
     window.draw(healthBarP2);
 
-    // ✅ Draw Round End Indicator
+    // Draw Round End Indicator
     window.draw(roundEndedText);
 
-    // ✅ Draw Hamburger Menu Icon
+    // Draw Hamburger Menu Icon
     sf::RectangleShape bar1(sf::Vector2f(24.f, 4.f));
     sf::RectangleShape bar2(sf::Vector2f(24.f, 4.f));
     sf::RectangleShape bar3(sf::Vector2f(24.f, 4.f));
@@ -208,18 +208,18 @@ window.display();
 
 void Game::restartGame() {
 
-    roundCount++; // ✅ Increment round counter
+    roundCount++; // Increment round counter
 
     player1.setPosition(50.f, (window.getSize().y / 2.f) - (player1.getSize().y / 2.f));
     player2.setPosition(window.getSize().x - player2.getSize().x, (window.getSize().y / 2.f) - (player2.getSize().y / 2.f));
     player1.setRotation(0);
     player2.setRotation(180);
 
-    // ✅ Reset health for both players
+    // Reset health for both players
     player1.resetHealth();
     player2.resetHealth();
 
-    // ✅ Reset health bars to full size
+    // Reset health bars to full size
     healthBarP1.setSize(sf::Vector2f(100, 10));  // Full health for Player 1
     healthBarP2.setSize(sf::Vector2f(100, 10));  // Full health for Player 2
 
@@ -229,7 +229,7 @@ void Game::restartGame() {
     roundEndedText.setString("");
     inMenu = false;
 
-    updateScoreDisplay(); // ✅ Update score display
+    updateScoreDisplay(); // Update score display
 }
 
 void Game::shoot(Player& player) {
@@ -273,7 +273,7 @@ void Game::handleMenuInput(sf::Event event) {
     else if (event.type == sf::Event::MouseMoved) {
         sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
         sf::Vector2f mousePos = window.mapPixelToCoords(pixelPos);
-        menu.onHover(mousePos);  // ✅ Hover effect restored
+        menu.onHover(mousePos);  
     }
     else if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
@@ -297,7 +297,7 @@ void Game::handleMenuInput(sf::Event event) {
             }
         }
     }
-}  // ✅ Closing brace fixed
+} 
 
 
 void Game::handleShooting() {
@@ -313,14 +313,14 @@ void Game::handleResize(int windowWidth, int windowHeight) {
     view.setCenter(windowWidth / 2.f, windowHeight / 2.f);
     window.setView(view);
 
-    // ✅ Map resizing restored to original behavior
+    
     map.resize(windowWidth, windowHeight);
 
     // Adjust UI elements
     controlsText.setPosition(10.f, windowHeight - 20.f);
     menu.adjustMenuPositions(windowWidth, windowHeight);
 
-    // Player positions restored
+    
     player1.setPosition(50.f, (windowHeight / 2.f) - (player1.getSize().y / 2.f));
     player2.setPosition(windowWidth - player2.getSize().x, (windowHeight / 2.f) - (player2.getSize().y / 2.f));
     player2.setRotation(180.f);

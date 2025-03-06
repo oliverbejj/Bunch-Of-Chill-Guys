@@ -22,7 +22,7 @@ private:
     sf::Text controlsText;
     std::vector<Bullet> bullets;
 
-    // ✅ Health Bars and Round-End Text
+    // Health Bars and Round-End Text
     sf::RectangleShape healthBarP1, healthBarP2;
     sf::Text roundEndedText;
 
@@ -52,4 +52,4 @@ private:
     sf::Music gameMusic;      // Background music
 };
 
-#endif // GAME_HPP
+#endif 

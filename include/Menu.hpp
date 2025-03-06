@@ -16,12 +16,12 @@ public:
     void adjustMenuPositions(float width, float height);
     void showRestartOption(bool show, float width, float height);
     void onHover(sf::Vector2f mousePos);
-    sf::Sprite getBackground();  // ✅ Add this line
+    sf::Sprite getBackground();  
 
 
 
 private:
-    sf::Texture backgroundTexture;    // ✅ Background texture
+    sf::Texture backgroundTexture;    // Background texture
     sf::Sprite backgroundSprite; 
     size_t selectedItemIndex;  // Change from int to size_t
     bool showRestart = false;    

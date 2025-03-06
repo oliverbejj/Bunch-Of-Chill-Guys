@@ -3,9 +3,9 @@
 Menu::Menu(float width, float height) {
     selectedItemIndex = 0;
 
-    // ✅ Load background image
+    // Load background image
     if (!backgroundTexture.loadFromFile("assets/images/Background.jpg")) {
-        // Handle error
+       //handle error (we didnt)
     }
     backgroundSprite.setTexture(backgroundTexture);
     backgroundSprite.setScale(
@@ -13,7 +13,7 @@ Menu::Menu(float width, float height) {
         height / backgroundSprite.getLocalBounds().height
     );
 
-    // ✅ Load custom font
+    // Load custom font
     if (!font.loadFromFile("assets/fonts/ARMY_RUST.ttf")) {
         // Handle error
     }
@@ -35,7 +35,7 @@ Menu::Menu(float width, float height) {
 
 
 void Menu::draw(sf::RenderWindow& window) {
-    window.draw(backgroundSprite); // ✅ Draw the background
+    window.draw(backgroundSprite); //  Draw the background
 
     for (auto& item : menuItems) {
         window.draw(item); // Draw menu items on top
@@ -79,7 +79,7 @@ void Menu::adjustMenuPositions(float width, float height) {
     float startY = height / 2 - (menuItems.size() * 30);  // Center vertically
 
     for (size_t i = 0; i < menuItems.size(); i++) {
-        // ✅ Center based on text width
+        // Center based on text width
         float textWidth = menuItems[i].getLocalBounds().width;
         float centerX = (width - textWidth) / 2;
 
@@ -111,7 +111,7 @@ void Menu::onHover(sf::Vector2f mousePos) {
         sf::FloatRect bounds = menuItems[i].getGlobalBounds();
 
         if (bounds.contains(mousePos)) {
-            // ✅ Apply hover effect
+            // Apply hover effect
             menuItems[i].setFillColor(sf::Color::Yellow);  // Highlight the item
             menuItems[i].setScale(1.1f, 1.1f);             // Slightly enlarge the text
             selectedItemIndex = i;

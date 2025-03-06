@@ -19,4 +19,4 @@ private:
     sf::Color beige;  
 };
 
-#endif // MAP_HPP
+#endif 

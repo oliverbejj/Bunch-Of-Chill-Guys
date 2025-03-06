@@ -77,12 +77,11 @@ void Player::update(sf::Keyboard::Key up,
 
 bool Player::checkPlayerCollision(const sf::FloatRect& otherBounds) {
     // Using bounding-box intersection for the circle, 
-    // but you could refine to real circle collision if desired
     return shape.getGlobalBounds().intersects(otherBounds);
 }
 
 void Player::draw(sf::RenderWindow& window) {
-    // Draw the circle shape (for debugging or aesthetic)
+    // Draw the circle shape 
     window.draw(shape);
     // Draw the sprite
     window.draw(sprite);

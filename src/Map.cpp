@@ -32,36 +32,36 @@ void Map::createMapLayout(int width, int height) {
 
 
    // Bumps
-    sf::RectangleShape bumpLeft(sf::Vector2f(150, 150));  // Bump size: 40x40 (adjustable)
-    bumpLeft.setPosition(650, height - 170);         // Positioned slightly above the bottom wall
-    bumpLeft.setFillColor(sf::Color(222, 174, 127));              // Same color as outer walls
+    sf::RectangleShape bumpLeft(sf::Vector2f(150, 150)); 
+    bumpLeft.setPosition(650, height - 170);         
+    bumpLeft.setFillColor(sf::Color(222, 174, 127));             
     walls.push_back(bumpLeft);
 
 
-    sf::RectangleShape bumpRight(sf::Vector2f(150, 150));  // Bump size: 40x40 (adjustable)
-    bumpRight.setPosition(width - 750, height - 170);         // Positioned slightly above the bottom wall
-    bumpRight.setFillColor(sf::Color(222, 174, 127));              // Same color as outer walls
+    sf::RectangleShape bumpRight(sf::Vector2f(150, 150)); 
+    bumpRight.setPosition(width - 750, height - 170);        
+    bumpRight.setFillColor(sf::Color(222, 174, 127));              
     walls.push_back(bumpRight);
 
-    sf::RectangleShape bump1(sf::Vector2f(150, 66));  // Bump size: 40x40 (adjustable)
-    bump1.setPosition(20, height/2 + 170 );         // Positioned slightly above the bottom wall
-    bump1.setFillColor(sf::Color(222, 174, 127));              // Same color as outer walls
+    sf::RectangleShape bump1(sf::Vector2f(150, 66));  
+    bump1.setPosition(20, height/2 + 170 );        
+    bump1.setFillColor(sf::Color(222, 174, 127));             
     walls.push_back(bump1);
 
-    sf::RectangleShape idk1(sf::Vector2f(10, 90));  // Bump size: 40x40 (adjustable)
-    idk1.setPosition(160, height/2 + 170 + 66 + 100 );         // Positioned slightly above the bottom wall
-    idk1.setFillColor(sf::Color(222, 174, 127));              // Same color as outer walls
+    sf::RectangleShape idk1(sf::Vector2f(10, 90));  
+    idk1.setPosition(160, height/2 + 170 + 66 + 100 );         
+    idk1.setFillColor(sf::Color(222, 174, 127));              
     walls.push_back(idk1);
 
 
-    sf::RectangleShape bump2(sf::Vector2f(150, 66));  // Bump size: 40x40 (adjustable)
-    bump2.setPosition(4*width/5 + 215, height/2 - 200 );         // Positioned slightly above the bottom wall
-    bump2.setFillColor(sf::Color(222, 174, 127));              // Same color as outer walls
+    sf::RectangleShape bump2(sf::Vector2f(150, 66));  
+    bump2.setPosition(4*width/5 + 215, height/2 - 200 );        
+    bump2.setFillColor(sf::Color(222, 174, 127));              
     walls.push_back(bump2);
 
-    sf::RectangleShape idk2(sf::Vector2f(10, 90));  // Bump size: 40x40 (adjustable)
-    idk2.setPosition(4*width/5 + 215, height/2 - 220 - 66 - 100 );         // Positioned slightly above the bottom wall
-    idk2.setFillColor(sf::Color(222, 174, 127));              // Same color as outer walls
+    sf::RectangleShape idk2(sf::Vector2f(10, 90)); 
+    idk2.setPosition(4*width/5 + 215, height/2 - 220 - 66 - 100 );         
+    idk2.setFillColor(sf::Color(222, 174, 127));             
     walls.push_back(idk2);
 
 
@@ -69,34 +69,28 @@ void Map::createMapLayout(int width, int height) {
 
 
     //cars
-    sf::RectangleShape car1(sf::Vector2f(120, 66));  // Bump size: 40x40 (adjustable)
-    car1.setPosition((width-100)/2+10, height - 150);         // Positioned slightly above the bottom wall
-    car1.setFillColor(sf::Color(0, 153, 0));              // Same color as outer walls
+    sf::RectangleShape car1(sf::Vector2f(120, 66));  
+    car1.setPosition((width-100)/2+10, height - 150);        
+    car1.setFillColor(sf::Color(0, 153, 0));              
     walls.push_back(car1);
 
-    sf::RectangleShape car2(sf::Vector2f(66, 120));  // Bump size: 40x40 (adjustable)
-    car2.setPosition((width-100)/2+40, 100);         // Positioned slightly above the bottom wall
-    car2.setFillColor(sf::Color(160, 160, 160));              // Same color as outer walls
+    sf::RectangleShape car2(sf::Vector2f(66, 120)); 
+    car2.setPosition((width-100)/2+40, 100);         
+    car2.setFillColor(sf::Color(160, 160, 160));             
     walls.push_back(car2);
 
-
-    sf::RectangleShape sideWall(sf::Vector2f(10, 80));  // Bump size: 40x40 (adjustable)
-    sideWall.setPosition((width)/2-200, 20);         // Positioned slightly above the bottom wall
-    sideWall.setFillColor(sf::Color::White);              // Same color as outer walls
+    sf::RectangleShape sideWall(sf::Vector2f(10, 80));
+    sideWall.setPosition((width)/2-200, 20);
+    sideWall.setFillColor(sf::Color::White);
     walls.push_back(sideWall);
 
-    sf::RectangleShape sideWall2(sf::Vector2f(10, 80));  // Bump size: 40x40 (adjustable)
-    sideWall2.setPosition((width)/2+200, 20);         // Positioned slightly above the bottom wall
-    sideWall2.setFillColor(sf::Color::White);              // Same color as outer walls
+    sf::RectangleShape sideWall2(sf::Vector2f(10, 80));
+    sideWall2.setPosition((width)/2+200, 20);
+    sideWall2.setFillColor(sf::Color::White);
     walls.push_back(sideWall2);
 
-    
 
-
-    
-
-
-    // ✅ LEFT SIDE HOUSES (Original Orientation)
+    //  LEFT SIDE HOUSES 
     float xLeft = 300;
     float yLeft = 200;
     float rectWidth = 400;
@@ -174,9 +168,9 @@ void Map::createMapLayout(int width, int height) {
     lowerRightLower.setFillColor(sf::Color::White);
     walls.push_back(lowerRightLower);
 
-    // ✅ RIGHT SIDE HOUSES (Inverted Orientation)
+    //  RIGHT SIDE HOUSES (Inverted Orientation)
     float xRight = width - xLeft - rectWidth;
-    float yRight = yLeft + rectHeight;  // Keep the vertical alignment the same
+    float yRight = yLeft + rectHeight;  
 
 
 
@@ -221,7 +215,7 @@ void Map::createMapLayout(int width, int height) {
 
     // Lower House (Inverted on Right Side)
     float lowerXRight = xRight + 50;
-    float lowerYRight = yRight - lowerHeight - 10;  // Place it above the inverted house
+    float lowerYRight = yRight - lowerHeight - 10; 
 
     sf::RectangleShape bottomWallLowerRight(sf::Vector2f(lowerWidth, wallThickness));
     bottomWallLowerRight.setPosition(lowerXRight, lowerYRight);
@@ -256,32 +250,32 @@ void Map::createMapLayout(int width, int height) {
 
 
 
-    // ✅ Add Parallel Diagonal Buses in the Middle
+    // Parallel Diagonal Buses in the Middle
 
     // Bus Dimensions
-    float busLength = rectWidth;  // 60% of the house length (400 * 0.6 = 240)
-    float busWidth = 70;                // Standard bus width
-    float busSpacing = 120;              // Space between the two buses
+    float busLength = rectWidth;  
+    float busWidth = 70;               
+    float busSpacing = 120;             
 
     // First Bus (Top-left to Bottom-right)
     sf::RectangleShape bus1(sf::Vector2f(busLength, busWidth));
     bus1.setFillColor(sf::Color(204, 204, 0));
-    bus1.setOrigin(busLength / 2, busWidth / 2);                     // Center origin for rotation
-    bus1.setPosition(width / 2, height / 2 - busSpacing);            // Positioned slightly above center
-    bus1.setRotation(45);                                            // Diagonal orientation
+    bus1.setOrigin(busLength / 2, busWidth / 2);                    
+    bus1.setPosition(width / 2, height / 2 - busSpacing);           
+    bus1.setRotation(45);                                           
     walls.push_back(bus1);
 
     // Second Bus (Parallel to the first one)
     sf::RectangleShape bus2(sf::Vector2f(busLength, busWidth));
     bus2.setFillColor(sf::Color(204, 0, 0));
-    bus2.setOrigin(busLength / 2, busWidth / 2);                     // Center origin for rotation
-    bus2.setPosition(width / 2, height / 2 + busSpacing);            // Positioned slightly below center
-    bus2.setRotation(45);                                            // Same rotation to stay parallel
+    bus2.setOrigin(busLength / 2, busWidth / 2);                     
+    bus2.setPosition(width / 2, height / 2 + busSpacing);            
+    bus2.setRotation(45);                                            
     walls.push_back(bus2);
 }
 
 void Map::resize(int windowWidth, int windowHeight) {
-    walls.clear();  // ✅ Original code behavior
+    walls.clear();  
     createMapLayout(windowWidth, windowHeight);  // Recreate layout to fit new size
 }
 

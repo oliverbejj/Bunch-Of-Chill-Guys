@@ -6,7 +6,7 @@ Bullet::Bullet(float x, float y, float dirX, float dirY) {
     shape.setFillColor(sf::Color::Yellow);
     shape.setPosition(x, y);
 
-    // ✅ Normalize direction for consistent speed
+    //  Normalize direction for consistent speed
     float magnitude = std::sqrt(dirX * dirX + dirY * dirY);
     direction = (magnitude != 0) ? sf::Vector2f(dirX / magnitude, dirY / magnitude) : sf::Vector2f(1, 0);
     
